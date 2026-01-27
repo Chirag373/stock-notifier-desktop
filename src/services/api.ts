@@ -2,7 +2,7 @@
 
 // Electron typically runs on localhost or accesses a remote URL. 
 // We removed the Android emulator IP check (10.0.2.2).
-export const API_BASE_URL = 'http://127.0.0.1:8000';
+export const API_BASE_URL = 'https://stocknotifier.duckdns.org';
 
 export interface WatchlistItem {
     symbol: string;
@@ -175,6 +175,19 @@ export const deleteAlert = async (id: string): Promise<void> => {
         }
     } catch (error) {
         console.error('Delete alert error:', error);
+        throw error;
+    }
+};
+
+export const fetchServerStatus = async (): Promise<{ status: string; service: string }> => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/`);
+        if (!response.ok) {
+            throw new Error(`Status check failed with status ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Fetch server status error:', error);
         throw error;
     }
 };

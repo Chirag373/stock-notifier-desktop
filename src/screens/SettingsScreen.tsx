@@ -1,10 +1,29 @@
 import React, { useState } from 'react';
-import { Bell, Moon, Sun, ChevronRight, Trash2 } from 'lucide-react';
+import { Bell, Moon, Sun, ChevronRight, Trash2, Activity, CheckCircle2, XCircle } from 'lucide-react';
+import { fetchServerStatus } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
 
 export default function SettingsScreen() {
     const { isDarkMode, toggleTheme, colors } = useTheme();
     const [notifications, setNotifications] = useState(true);
+    const [serverStatus, setServerStatus] = useState<'checking' | 'online' | 'offline'>('checking');
+
+    React.useEffect(() => {
+        checkServer();
+    }, []);
+
+    const checkServer = async () => {
+        try {
+            const data = await fetchServerStatus();
+            if (data.status === 'ok') {
+                setServerStatus('online');
+            } else {
+                setServerStatus('offline');
+            }
+        } catch (error) {
+            setServerStatus('offline');
+        }
+    };
 
     const styles = {
         container: { flex: 1, padding: '24px', backgroundColor: colors.background, height: '100vh', overflowY: 'auto' as const },
@@ -155,6 +174,35 @@ export default function SettingsScreen() {
                             color={colors.error}
                             subLabel="Clear local app data"
                             onToggle={handleClearCache} // Reusing onToggle for click action since row handles onClick
+                        />
+                    </div>
+                </div>
+
+                <div style={styles.section}>
+                    <div style={styles.sectionTitle}>System Status</div>
+                    <div style={styles.card}>
+                        <SettingRow
+                            icon={<Activity />}
+                            label="API Server"
+                            subLabel={serverStatus === 'checking' ? 'Checking connectivity...' : (serverStatus === 'online' ? 'Operational' : 'Connection failed')}
+                            type="value"
+                            value={
+                                serverStatus === 'checking' ? (
+                                    <span style={{ color: colors.textSecondary }}>Checking...</span>
+                                ) : serverStatus === 'online' ? (
+                                    <div style={{ display: 'flex', alignItems: 'center', color: '#34C759' }}>
+                                        <CheckCircle2 size={16} style={{ marginRight: '6px' }} />
+                                        Online
+                                    </div>
+                                ) : (
+                                    <div style={{ display: 'flex', alignItems: 'center', color: colors.error || '#FF3B30' }}>
+                                        <XCircle size={16} style={{ marginRight: '6px' }} />
+                                        Offline
+                                    </div>
+                                )
+                            }
+                            color={serverStatus === 'online' ? '#34C759' : (serverStatus === 'offline' ? colors.error : colors.textSecondary)}
+                            onToggle={checkServer}
                         />
                     </div>
                 </div>
