@@ -162,6 +162,10 @@ export default function HomeScreen() {
                                                 : 'N/A'}
                                         </div>
                                     </div>
+                                    <div style={{ textAlign: 'center' }}>
+                                        <div style={{ fontSize: '11px', color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Updated</div>
+                                        <div style={{ fontSize: '13px', fontWeight: '600', color: colors.text }}>{formatTimeAgo(item.last_checked)}</div>
+                                    </div>
                                     <div style={{ textAlign: 'right' }}>
                                         <div style={{ fontSize: '11px', color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Market</div>
                                         <div style={{ fontSize: '13px', fontWeight: '600', color: colors.text }}>{item.country || 'Unknown'}</div>

@@ -5,6 +5,16 @@ import { fetchWatchlist, WatchlistItem, deleteWatchlistItem } from '../services/
 import { useTheme } from '../context/ThemeContext';
 import { toast } from 'react-toastify';
 
+const formatTimeAgo = (dateString: string) => {
+    const now = new Date();
+    const date = new Date(dateString);
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    if (diffInSeconds < 60) return `Just now`;
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    return `${Math.floor(diffInSeconds / 86400)}d ago`;
+};
+
 export default function WatchlistScreen() {
     const navigate = useNavigate();
     const { colors } = useTheme();
@@ -193,6 +203,10 @@ export default function WatchlistScreen() {
                                                     ? `${Math.abs((item.last_price - item.last_dma) / item.last_dma * 100).toFixed(2)}% away`
                                                     : 'N/A'}
                                             </div>
+                                        </div>
+                                        <div style={{ textAlign: 'center' }}>
+                                            <div style={styles.statLabel}>Updated</div>
+                                            <div style={styles.statValue}>{formatTimeAgo(item.last_checked)}</div>
                                         </div>
                                         <div style={{ textAlign: 'right' }}>
                                             <div style={styles.statLabel}>Market</div>
