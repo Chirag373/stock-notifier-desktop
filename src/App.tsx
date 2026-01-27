@@ -15,6 +15,7 @@ import { ThemeProvider, useTheme } from './context/ThemeContext';
 
 import SettingsScreen from './screens/SettingsScreen';
 import AlertsScreen from './screens/AlertsScreen';
+import LockScreen from './screens/LockScreen';
 
 // Placeholder components
 const Placeholder = ({ title }: { title: string }) => <div style={{ padding: 20 }}><h1>{title}</h1></div>;
@@ -58,9 +59,24 @@ const NavItem = ({ to, icon, label }: any) => {
     );
 };
 
-export default function App() {
+// Inner component to access ThemeContext and handle Lock state
+function AppInner() {
+    const [isLocked, setIsLocked] = React.useState(() => {
+        return localStorage.getItem('app_unlocked') !== 'true';
+    });
+
+    const handleUnlock = () => {
+        localStorage.setItem('app_unlocked', 'true');
+        setIsLocked(false);
+    };
+
+    // If using a "Lock Screen" generally implies we want it to be the only thing visible
+    if (isLocked) {
+        return <LockScreen onUnlock={handleUnlock} />;
+    }
+
     return (
-        <ThemeProvider>
+        <>
             <Router>
                 <Routes>
                     <Route path="/" element={<Layout />}>
@@ -74,6 +90,14 @@ export default function App() {
                 </Routes>
                 <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
             </Router>
+        </>
+    );
+}
+
+export default function App() {
+    return (
+        <ThemeProvider>
+            <AppInner />
         </ThemeProvider>
     );
 }
