@@ -189,7 +189,9 @@ export default function WatchlistScreen() {
                                         <div>
                                             <div style={styles.statLabel}>Next Alert</div>
                                             <div style={styles.statValue}>
-                                                {item.alert_threshold}% away
+                                                {item.last_dma
+                                                    ? `${Math.abs((item.last_price - item.last_dma) / item.last_dma * 100).toFixed(2)}% away`
+                                                    : 'N/A'}
                                             </div>
                                         </div>
                                         <div style={{ textAlign: 'right' }}>

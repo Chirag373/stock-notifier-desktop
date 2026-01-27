@@ -156,7 +156,11 @@ export default function HomeScreen() {
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '16px', borderTop: `1px solid ${colors.border}` }}>
                                     <div>
                                         <div style={{ fontSize: '11px', color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Next Alert</div>
-                                        <div style={{ fontSize: '13px', fontWeight: '600', color: colors.text }}>{item.alert_threshold}% away</div>
+                                        <div style={{ fontSize: '13px', fontWeight: '600', color: colors.text }}>
+                                            {item.last_dma
+                                                ? `${Math.abs((item.last_price - item.last_dma) / item.last_dma * 100).toFixed(2)}% away`
+                                                : 'N/A'}
+                                        </div>
                                     </div>
                                     <div style={{ textAlign: 'right' }}>
                                         <div style={{ fontSize: '11px', color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Market</div>

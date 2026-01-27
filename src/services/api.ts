@@ -14,6 +14,7 @@ export interface WatchlistItem {
     change_percent: number;
     company_name: string | null;
     last_checked: string;
+    last_dma?: number;
 }
 
 export interface AlertLog {
