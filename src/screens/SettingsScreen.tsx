@@ -214,7 +214,7 @@ export default function SettingsScreen() {
                             <div style={{ fontSize: '16px', fontWeight: '600', color: colors.text }}>Stock Notifier</div>
                             <div style={{ color: colors.textSecondary, fontSize: '14px', marginTop: '4px' }}>Version 1.0.0</div>
                             <div style={{ color: colors.textSecondary, fontSize: '12px', marginTop: '16px' }}>
-                                Built with Electron, React & Python
+                                Built with React & Python
                             </div>
                         </div>
                     </div>
