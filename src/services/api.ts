@@ -2,7 +2,7 @@
 
 // Electron typically runs on localhost or accesses a remote URL. 
 // We removed the Android emulator IP check (10.0.2.2).
-export const API_BASE_URL = 'http://localhost:5173/api';
+export const API_BASE_URL = '/api';
 
 export interface WatchlistItem {
     symbol: string;
