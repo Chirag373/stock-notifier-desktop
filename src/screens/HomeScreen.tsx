@@ -27,7 +27,7 @@ export default function HomeScreen() {
     const [alerts, setAlerts] = useState<AlertLog[]>([]);
 
     const styles = {
-        container: { flex: 1, padding: '20px', backgroundColor: colors.background, height: '100vh', overflowY: 'auto' as const },
+        container: { flex: 1, padding: '20px', paddingBottom: '100px', backgroundColor: colors.background, height: '100vh', overflowY: 'auto' as const },
         contentWrapper: {
             width: '100%',
             maxWidth: '1400px',

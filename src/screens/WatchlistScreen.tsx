@@ -22,7 +22,7 @@ export default function WatchlistScreen() {
     const [loading, setLoading] = useState(true);
 
     const styles = {
-        container: { flex: 1, padding: '24px', backgroundColor: colors.background, height: '100vh', overflowY: 'auto' as const },
+        container: { flex: 1, padding: '24px', paddingBottom: '100px', backgroundColor: colors.background, height: '100vh', overflowY: 'auto' as const },
         contentWrapper: {
             width: '100%',
             maxWidth: '1400px',
