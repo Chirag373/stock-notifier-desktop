@@ -86,16 +86,23 @@ export default function SearchScreen() {
 
     const handleAdd = async (e: React.MouseEvent, item: SearchResult) => {
         e.stopPropagation();
-        if (addingMap[item.symbol]) return;
 
-        setAddingMap(prev => ({ ...prev, [item.symbol]: true }));
+        // Append suffix for specific exchanges to help Yahoo Finance
+        let symbol = item.symbol;
+        if (item.exchange === 'NSE') symbol += '.NS';
+        else if (item.exchange === 'BSE') symbol += '.BO';
+        else if (item.exchange === 'IDX') symbol += '.JK'; // Jakarta
+
+        if (addingMap[symbol]) return;
+
+        setAddingMap(prev => ({ ...prev, [symbol]: true }));
         try {
-            await addToWatchlist(item.symbol, item.country);
-            toast.success(`Added ${item.symbol}`);
+            await addToWatchlist(symbol, item.country);
+            toast.success(`Added ${symbol}`);
         } catch (error) {
             console.error(error);
             toast.error('Failed to add stock');
-            setAddingMap(prev => ({ ...prev, [item.symbol]: false }));
+            setAddingMap(prev => ({ ...prev, [symbol]: false }));
         }
     };
 
@@ -136,14 +143,14 @@ export default function SearchScreen() {
                         <button
                             style={{
                                 ...styles.addButton,
-                                backgroundColor: addingMap[item.symbol] ? colors.success + '20' : colors.primary + '15',
-                                color: addingMap[item.symbol] ? colors.success : colors.primary
+                                backgroundColor: (addingMap[item.symbol] || (item.exchange === 'NSE' && addingMap[item.symbol + '.NS']) || (item.exchange === 'BSE' && addingMap[item.symbol + '.BO'])) ? colors.success + '20' : colors.primary + '15',
+                                color: (addingMap[item.symbol] || (item.exchange === 'NSE' && addingMap[item.symbol + '.NS']) || (item.exchange === 'BSE' && addingMap[item.symbol + '.BO'])) ? colors.success : colors.primary
                             }}
                             onClick={(e) => handleAdd(e, item)}
-                            title={addingMap[item.symbol] ? "Already added" : "Add straight to watchlist"}
+                            title={(addingMap[item.symbol] || (item.exchange === 'NSE' && addingMap[item.symbol + '.NS']) || (item.exchange === 'BSE' && addingMap[item.symbol + '.BO'])) ? "Already added" : "Add straight to watchlist"}
                         >
-                            {addingMap[item.symbol] ? <Check size={16} /> : <Plus size={16} />}
-                            <span style={{ marginLeft: '6px' }}>{addingMap[item.symbol] ? 'Added' : 'Add'}</span>
+                            {(addingMap[item.symbol] || (item.exchange === 'NSE' && addingMap[item.symbol + '.NS']) || (item.exchange === 'BSE' && addingMap[item.symbol + '.BO'])) ? <Check size={16} /> : <Plus size={16} />}
+                            <span style={{ marginLeft: '6px' }}>{(addingMap[item.symbol] || (item.exchange === 'NSE' && addingMap[item.symbol + '.NS']) || (item.exchange === 'BSE' && addingMap[item.symbol + '.BO'])) ? 'Added' : 'Add'}</span>
                         </button>
                     </div>
                 ))}
